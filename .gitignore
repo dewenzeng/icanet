@@ -1,0 +1,17 @@
+.DS_STORE
+
+__pycache__
+
+runs/
+
+runs_back/
+
+runs_finetune/
+
+output/
+
+runs_new/
+
+.vscode/
+
+._*
