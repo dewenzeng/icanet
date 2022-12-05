@@ -23,10 +23,10 @@ parser.add_argument('--val-batch-size', default=4, type=int,
                 help='validation mini-batch size (default: 4)')
 parser.add_argument('--epochs', default=200, type=int, metavar='N',
                     help='number of total epochs to run')
-parser.add_argument('--lr', '--learning-rate', default=1e-3, type=float,
+parser.add_argument('--lr', '--learning-rate', default=1e-4, type=float,
                 metavar='LR', help='initial learning rate', dest='lr')
-parser.add_argument('--wd', '--weight-decay', default=1e-4, type=float,
-                metavar='W', help='weight decay (default: 1e-4)',
+parser.add_argument('--wd', '--weight-decay', default=1e-5, type=float,
+                metavar='W', help='weight decay (default: 1e-5)',
                 dest='weight_decay')
 parser.add_argument('--min_lr', default=0.0, type=float, 
                     help='minimal learning rate', dest='min_lr')
@@ -59,7 +59,7 @@ def main():
     val_num_batches_per_epoch = 20
 
     # Define model    
-    model = UNet3D(num_classes=args.num_classes, in_channels=1, initial_filter_size=32, kernel_size=3, num_downs=4, norm_layer=nn.InstanceNorm3d)
+    model = UNet3D(num_classes=args.num_classes, in_channels=1, initial_filter_size=64, kernel_size=3, num_downs=4, norm_layer=nn.InstanceNorm3d)
 
     # Use model parallel?
     # model = nn.DataParallel(model)
@@ -152,6 +152,15 @@ def main():
             ckpt_dir = os.path.join(args.model_dir, args.experiment_name+'_'+current_time)
             os.makedirs(ckpt_dir, exist_ok=True)
             torch.save(saved_result, os.path.join(ckpt_dir, 'best.pth'))
+    
+    # save the latest checkpoint
+    saved_result = {
+        'epoch': epoch + 1,
+        'state_dict': model.state_dict()
+    }
+    ckpt_dir = os.path.join(args.model_dir, args.experiment_name+'_'+current_time)
+    os.makedirs(ckpt_dir, exist_ok=True)
+    torch.save(saved_result, os.path.join(ckpt_dir, 'latest.pth'))
 
     print("Training has finished.")
     writer.flush()

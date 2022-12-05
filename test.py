@@ -27,7 +27,7 @@ def main():
     torch.cuda.set_device('cuda:0')
 
     # load model
-    model = UNet3D(num_classes=4, in_channels=1, initial_filter_size=32, kernel_size=3, num_downs=4, norm_layer=nn.InstanceNorm3d)
+    model = UNet3D(num_classes=4, in_channels=1, initial_filter_size=64, kernel_size=3, num_downs=4, norm_layer=nn.InstanceNorm3d)
 
     # load model parameters
     model.load_state_dict(torch.load(args.checkpoint)['state_dict'])
@@ -92,8 +92,8 @@ def main():
         dice_list.append(dice)
     print(f'Average dice:{np.array(dice_list).mean()}')
     # Uncomment this if you want to save the individual result to excel.
-    results_df = pd.DataFrame(rows, columns=columns)
-    results_df.to_excel(os.path.join('./result/', 'dice_results.xlsx'), index=False)
+    # results_df = pd.DataFrame(rows, columns=columns)
+    # results_df.to_excel(os.path.join('./result/', 'dice_results.xlsx'), index=False)
 
 if __name__ == "__main__":
     main()
