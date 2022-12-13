@@ -95,7 +95,7 @@ if __name__ == "__main__":
     json_dict['numTest'] = len(all_test_files)
     json_dict['training'] = [{'image': "./imagesTr/%s.nii.gz" % i.split("/")[-1][:-12], "label": "./labelsTr/%s.nii.gz" % i.split("/")[-1][:-12]} for i in
                              all_train_files]
-    json_dict['test'] = [{'image': "./imagesTs/%s.nii.gz" % i.split("/")[-1][:-12], 'label': "./labelsTs/%s.nii.gz" % i.split("/")[-1][:-12]} for i in all_test_files]
+    json_dict['test'] = ["./imagesTs/%s.nii.gz" % i.split("/")[-1][:-12] for i in all_test_files]
 
     save_json(json_dict, os.path.join(out_folder, "dataset.json"))
 
